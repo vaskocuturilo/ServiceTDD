@@ -17,7 +17,7 @@ public class UserRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllHandleUsers() {
+    public ResponseEntity getAllHandleUsers() {
         try {
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
@@ -28,4 +28,6 @@ public class UserRestController {
                     .body(exception.getMessage());
         }
     }
+
+
 }
