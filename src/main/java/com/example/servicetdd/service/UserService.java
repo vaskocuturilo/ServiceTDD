@@ -17,4 +17,8 @@ public class UserService {
     public Collection<UserEntity> getAllHandleUsers() {
         return userRepository.findAll();
     }
+
+    public UserEntity createUser(final UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
 }
