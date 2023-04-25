@@ -58,7 +58,7 @@ class UserServiceTest {
     void givenUser_whenPostUser_thenStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/users")
-                        .content(new ObjectMapper().writeValueAsString(new UserEntity("test1", "test1")))
+                        .content(new ObjectMapper().writeValueAsString(new UserEntity("test1@test.com", "test1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -71,8 +71,21 @@ class UserServiceTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password").isNotEmpty())
 
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("test1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("test1@test.com")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password", equalTo("test1")));
+    }
+
+    @Test
+    void givenUser_whenPostUserWithInCorrectEmail_thenStatus400() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/users")
+                        .content(new ObjectMapper().writeValueAsString(new UserEntity("test1", "test1")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assertions.assertTrue(content.contains("Email is not valid"));
     }
 
     @Test
