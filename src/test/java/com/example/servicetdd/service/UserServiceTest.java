@@ -129,4 +129,14 @@ class UserServiceTest {
         String content = result.getResponse().getContentAsString();
         Assertions.assertTrue(content.contains("User data should not be blank"));
     }
+
+    @Test
+    public void givenUser_whenDeleteUser_thenStatus200() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/users")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*]").isEmpty())
+                .andExpect(MockMvcResultMatchers.content().string("A user was delete"));
+    }
 }
