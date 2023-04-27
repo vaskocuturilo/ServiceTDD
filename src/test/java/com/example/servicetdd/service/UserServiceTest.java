@@ -37,6 +37,22 @@ class UserServiceTest {
     }
 
     @Test
+    void getUsersHandle_whenGetUserById_thenStatus200() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/users", "1L")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id", equalTo(1L)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].username", equalTo("test1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].password", equalTo("test1")));
+    }
+
+    @Test
     void getUsersHandle_whenGetUsers_thenStatus404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/user")
