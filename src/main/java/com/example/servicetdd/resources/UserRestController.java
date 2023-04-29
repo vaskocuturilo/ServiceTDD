@@ -44,4 +44,18 @@ public class UserRestController {
                     .body(exception.getMessage());
         }
     }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("A user was delete");
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(exception.getMessage());
+        }
+    }
 }
