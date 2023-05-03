@@ -45,6 +45,19 @@ public class UserRestController {
         }
     }
 
+    @PutMapping(path = "/{id}")
+    public ResponseEntity updateUser(@PathVariable("id") Long id, @RequestBody UserEntity userEntity) {
+        try {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(userService.updateUser(id, userEntity));
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(exception.getMessage());
+        }
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteUser(@PathVariable Long id) {
         try {
