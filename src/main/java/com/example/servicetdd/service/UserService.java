@@ -5,6 +5,7 @@ import com.example.servicetdd.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,5 +25,17 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public UserEntity updateUser(Long id, UserEntity userEntity) {
+        Optional<UserEntity> userData = userRepository.findById(id);
+        if (!userData.isPresent()) {
+            throw new IllegalStateException("User with id  = " + id + " not found");
+        }
+        UserEntity _userEntity = userData.get();
+        _userEntity.setUsername(userEntity.getUsername());
+        _userEntity.setPassword(userEntity.getPassword());
+
+        return userRepository.save(_userEntity);
     }
 }

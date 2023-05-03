@@ -158,23 +158,23 @@ class UserServiceTest {
     }
 
     @Test
-    @Disabled
+    public void givenUser_whenUpdateUser_thenStatus400() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/api/v1/users", "10")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("User with id  = 10 not found"));
+    }
+
+    @Test
     public void givenUser_whenUpdateUser_thenStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/users")
-                        .content(new ObjectMapper().writeValueAsString(new UserEntity(1L, "test1@test.com", "password")))
+                        .put("/api/v1/users", "1")
+                        .content(new ObjectMapper().writeValueAsString(new UserEntity("afterupdate@test.com", "afterupdate@test.com")))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").exists())
-
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").isNotEmpty())
-
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("test1@test.com")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password", equalTo("password")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo("1L")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("afterupdate@test.com")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.password", equalTo("afterupdate@test.com")));
     }
 }
