@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -31,10 +32,10 @@ class UserServiceTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))));
+                .andExpect(jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[*].id").isNotEmpty())
+                .andExpect(jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))));
     }
 
     @Test
@@ -45,13 +46,13 @@ class UserServiceTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id", equalTo(1L)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].username", equalTo("test1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].password", equalTo("test1")));
+                .andExpect(jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[*].id").isNotEmpty())
+                .andExpect(jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[*].id", equalTo(1L)))
+                .andExpect(jsonPath("$[*].username", equalTo("test1")))
+                .andExpect(jsonPath("$[*].password", equalTo("test1")));
     }
 
     @Test
@@ -80,17 +81,17 @@ class UserServiceTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.username").exists())
+                .andExpect(jsonPath("$.password").exists())
 
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").isNotEmpty())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.username").isNotEmpty())
+                .andExpect(jsonPath("$.password").isNotEmpty())
 
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("test1@test.com")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password", equalTo("test1")));
+                .andExpect(jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.username", equalTo("test1@test.com")))
+                .andExpect(jsonPath("$.password", equalTo("test1")));
     }
 
     @Test
@@ -149,7 +150,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void givenUser_whenDeleteUser_thenStatus200() throws Exception {
+     void givenUser_whenDeleteUser_thenStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/api/v1/users/{id}", "1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -158,23 +159,33 @@ class UserServiceTest {
     }
 
     @Test
-    public void givenUser_whenUpdateUser_thenStatus400() throws Exception {
+    void givenUser_whenUpdateUser_thenStatus400() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        UserEntity user = new UserEntity();
+        user.setUsername("");
+        user.setPassword("");
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/users", "10")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .put("/api/v1/users/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(user)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().string("User with id  = 10 not found"));
     }
 
     @Test
-    public void givenUser_whenUpdateUser_thenStatus200() throws Exception {
+    void givenUser_whenUpdateUser_thenStatus200() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        UserEntity user = new UserEntity();
+        user.setUsername("afterupdate@qa.team");
+        user.setPassword("afterupdate@qa.team");
+
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/users", "1")
-                        .content(new ObjectMapper().writeValueAsString(new UserEntity("afterupdate@test.com", "afterupdate@test.com")))
-                        .accept(MediaType.APPLICATION_JSON))
+                        .put("/api/v1/users/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo("1L")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("afterupdate@test.com")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password", equalTo("afterupdate@test.com")));
+                .andExpect(jsonPath("$.username", equalTo("afterupdate@qa.team")))
+                .andExpect(jsonPath("$.password", equalTo("afterupdate@qa.team")));
     }
 }
