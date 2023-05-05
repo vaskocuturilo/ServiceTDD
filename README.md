@@ -34,32 +34,8 @@ You will need the following technologies available to try it out:
 - Create functionality for get user by id form database with unit test. DV-00006: Create functionality for get user by id from database. :heavy_check_mark:
 - Create functionality for update user in database with unit test. DV-00005: Create functionality for update user in database.  :heavy_check_mark:
 - Create functionality for delete user in database with unit test. DV-00004: Create functionality for delete user in database.  :heavy_check_mark:
-### Schema databases
-
-![]()
-
-### How it works.
-
-![]()
-
-### Swagger-UI. ()
-
-![]()
-
-### Actuator
-
-* http://localhost:8090/actuator
-* http://localhost:8090/actuator/health
-* http://localhost:8090/actuator/info
-
-### http://localhost:8090/actuator/health
-
-```{"status":"UP"}```
-
-### Ho w to run.
-
-``` gradle build```
-
+-Add swagger.
+- Add docker-compose.
 ## Swagger-ui:
 http://localhost:8080/swagger-ui/index.html
 ![](https://i.postimg.cc/g0FdZgTv/9f6f7275-c132-42fc-a1e0-bb65c0cade0d.png)
