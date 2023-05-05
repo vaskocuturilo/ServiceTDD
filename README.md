@@ -62,5 +62,5 @@ You will need the following technologies available to try it out:
 
 ## Swagger-ui:
 http://localhost:8080/swagger-ui/index.html
-![]()
+![](https://i.postimg.cc/g0FdZgTv/9f6f7275-c132-42fc-a1e0-bb65c0cade0d.png)
 
