@@ -29,6 +29,19 @@ public class UserRestController {
         }
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity getHandleUserById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(userService.getHandleUserById(id));
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(exception.getMessage());
+        }
+    }
+
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserEntity userEntity, UriComponentsBuilder uriComponentsBuilder) {
         try {

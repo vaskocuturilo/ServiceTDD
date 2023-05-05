@@ -38,4 +38,12 @@ public class UserService {
 
         return userRepository.save(_userEntity);
     }
+
+    public Optional<UserEntity> getHandleUserById(Long id) {
+        Optional<UserEntity> existUser = userRepository.findById(id);
+        if (!existUser.isPresent()){
+            throw new IllegalStateException("User with id  = " + id + " not found");
+        }
+        return userRepository.findById(existUser.get().getId());
+    }
 }
