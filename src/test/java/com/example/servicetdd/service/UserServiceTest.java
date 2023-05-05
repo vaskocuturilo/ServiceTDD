@@ -3,7 +3,6 @@ package com.example.servicetdd.service;
 import com.example.servicetdd.entity.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Date;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,20 +40,15 @@ class UserServiceTest {
     }
 
     @Test
-    @Disabled
     void getUsersHandle_whenGetUserById_thenStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/users", "1L")
+                        .get("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$[*].id").isNotEmpty())
-                .andExpect(jsonPath("$[*].username", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$[*].password", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$[*].id", equalTo(1L)))
-                .andExpect(jsonPath("$[*].username", equalTo("test1")))
-                .andExpect(jsonPath("$[*].password", equalTo("test1")));
+                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.username", equalTo("afterupdate@qa.team")))
+                .andExpect(jsonPath("$.password", equalTo("afterupdate@qa.team")));
     }
 
     @Test
@@ -75,11 +71,16 @@ class UserServiceTest {
 
     @Test
     void givenUser_whenPostUser_thenStatus200() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String newUser = createUser();
+        UserEntity user = new UserEntity();
+        user.setUsername(newUser);
+        user.setPassword(newUser);
+
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/users")
-                        .content(new ObjectMapper().writeValueAsString(new UserEntity("test1@test.com", "test1")))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(user))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.username").exists())
@@ -90,8 +91,8 @@ class UserServiceTest {
                 .andExpect(jsonPath("$.password").isNotEmpty())
 
                 .andExpect(jsonPath("$[*]", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$.username", equalTo("test1@test.com")))
-                .andExpect(jsonPath("$.password", equalTo("test1")));
+                .andExpect(jsonPath("$.username", equalTo(newUser)))
+                .andExpect(jsonPath("$.password", equalTo(newUser)));
     }
 
     @Test
@@ -150,7 +151,7 @@ class UserServiceTest {
     }
 
     @Test
-     void givenUser_whenDeleteUser_thenStatus200() throws Exception {
+    void givenUser_whenDeleteUser_thenStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/api/v1/users/{id}", "1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -181,11 +182,15 @@ class UserServiceTest {
         user.setPassword("afterupdate@qa.team");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/users/2")
+                        .put("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", equalTo("afterupdate@qa.team")))
                 .andExpect(jsonPath("$.password", equalTo("afterupdate@qa.team")));
+    }
+
+    private String createUser() {
+        return "user_" + new Date().getTime() + "@qa.team";
     }
 }
