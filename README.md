@@ -30,10 +30,10 @@ You will need the following technologies available to try it out:
 
 - Create simple service with MySQL Database. DV-0001: Create simple service. :heavy_check_mark:
 - Create functionality for get all users from database with unit test. DV-00002: Create functionality for get all users from database. :heavy_check_mark:
-- Create functionality for create user in database with unit test. DV-00003: Create functionality for create user in database.
+- Create functionality for create user in database with unit test. DV-00003: Create functionality for create user in database.  :heavy_check_mark:
 - Create functionality for get user by id form database with unit test. DV-00004: Create functionality for get user by id from database.
-- Create functionality for update user in database with unit test. DV-00005: Create functionality for update user in database.
-- Create functionality for delete user in database with unit test. DV-00006: Create functionality for delete user in database.
+- Create functionality for update user in database with unit test. DV-00005: Create functionality for update user in database.  :heavy_check_mark:
+- Create functionality for delete user in database with unit test. DV-00006: Create functionality for delete user in database.  :heavy_check_mark:
 ### Schema databases
 
 ![]()
