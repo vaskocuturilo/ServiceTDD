@@ -35,7 +35,14 @@ You will need the following technologies available to try it out:
 - Create functionality for update user in database with unit test. DV-00005: Create functionality for update user in database.  :heavy_check_mark:
 - Create functionality for delete user in database with unit test. DV-00004: Create functionality for delete user in database.  :heavy_check_mark:
 - Add swagger :heavy_check_mark:
-- Add docker-compose.
+- Add docker-compose. heavy_check_mark:
+
+### Ho w to run.
+
+``` gradle build```
+
+``` docker-compose up --build ```
+
 ## Swagger-ui:
 http://localhost:8080/swagger-ui/index.html
 ![](https://i.postimg.cc/g0FdZgTv/9f6f7275-c132-42fc-a1e0-bb65c0cade0d.png)
