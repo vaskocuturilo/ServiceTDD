@@ -35,7 +35,7 @@ You will need the following technologies available to try it out:
 - Create functionality for update user in database with unit test. DV-00005: Create functionality for update user in database.  :heavy_check_mark:
 - Create functionality for delete user in database with unit test. DV-00004: Create functionality for delete user in database.  :heavy_check_mark:
 - Add swagger :heavy_check_mark:
-- Add docker-compose. heavy_check_mark:
+- Add docker-compose. :heavy_check_mark:
 
 ### Ho w to run.
 
